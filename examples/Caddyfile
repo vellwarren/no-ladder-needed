@@ -1,0 +1,17 @@
+# Replace api.example.com and 127.0.0.1:3000 with your own values.
+# Keep the Origin CA private key outside this repository.
+
+api.example.com {
+	tls /etc/caddy/certs/cloudflare-origin.pem /etc/caddy/certs/cloudflare-origin.key
+
+	encode zstd gzip
+
+	reverse_proxy 127.0.0.1:3000 {
+		# Useful for SSE / streamed chat responses.
+		flush_interval -1
+
+		transport http {
+			response_header_timeout 10m
+		}
+	}
+}
